@@ -13,6 +13,7 @@ if (ENV == 'dev') {
     database: POSTGRES_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
+    port: 5433,
   });
 }
 
@@ -22,6 +23,7 @@ if (ENV == 'test') {
     database: POSTGRES_DB_TESTING,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
+    port: 5433,
   });
 }
 
