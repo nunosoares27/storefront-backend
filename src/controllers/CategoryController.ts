@@ -1,16 +1,12 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import CategoryService from '../services/CategoryService';
 import validateCategoryId from '../middlewares/validateCategoryId';
 
 export const CategoryController: Router = Router();
 const categoryService = new CategoryService();
 
-CategoryController.get('/', async (req: Request, res: Response, next: NextFunction) => categoryService.getCategories(req, res, next));
-CategoryController.post('/', async (req: Request, res: Response, next: NextFunction) => categoryService.createCategory(req, res, next));
-CategoryController.put('/:id', validateCategoryId, async (req: Request, res: Response, next: NextFunction) =>
-  categoryService.editCategory(req, res, next),
-);
-CategoryController.delete('/:id', validateCategoryId, async (req: Request, res: Response, next: NextFunction) =>
-  categoryService.deleteCategory(req, res, next),
-);
-CategoryController.get('/:id', async (req: Request, res: Response, next: NextFunction) => categoryService.getCategoryById(req, res, next));
+CategoryController.get('/', async (req: Request, res: Response) => categoryService.getCategories(req, res));
+CategoryController.post('/', async (req: Request, res: Response) => categoryService.createCategory(req, res));
+CategoryController.put('/:id', validateCategoryId, async (req: Request, res: Response) => categoryService.editCategory(req, res));
+CategoryController.delete('/:id', validateCategoryId, async (req: Request, res: Response) => categoryService.deleteCategory(req, res));
+CategoryController.get('/:id', async (req: Request, res: Response) => categoryService.getCategoryById(req, res));

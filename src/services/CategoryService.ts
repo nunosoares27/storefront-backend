@@ -1,10 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Store } from '../models/Category';
+import { categoryMessages } from '../helpers/messages';
 
 const store = new Store();
 
 class CategoryService {
-  getCategories = async (req: Request, res: Response, next: NextFunction) => {
+  getCategories = async (req: Request, res: Response) => {
     try {
       const categories = await store.index();
       res.status(200).send(categories);
@@ -13,17 +14,17 @@ class CategoryService {
     }
   };
 
-  getCategoryById = async (req: Request, res: Response, next: NextFunction) => {
+  getCategoryById = async (req: Request, res: Response) => {
     try {
       const category = await store.getById(parseInt(req.params.id));
-      if (!category) res.status(200).send({ message: `Theres no category by id ${req.params.id}` });
+      if (!category) res.status(200).send({ message: categoryMessages.theresNoCategoryWithId(req.params.id) });
       res.status(200).send(category);
     } catch (error) {
       res.status(400).send(error);
     }
   };
 
-  createCategory = async (req: Request, res: Response, next: NextFunction) => {
+  createCategory = async (req: Request, res: Response) => {
     try {
       const newCategory = await store.create(req.body.name);
       res.status(201).send(newCategory);
@@ -32,19 +33,19 @@ class CategoryService {
     }
   };
 
-  editCategory = async (req: Request, res: Response, next: NextFunction) => {
+  editCategory = async (req: Request, res: Response) => {
     try {
       await store.update({ id: parseInt(req.params.id), name: req.body.name });
-      res.status(201).send({ message: 'Category edited with sucess' });
+      res.status(201).send({ message: categoryMessages.editWithSuccess });
     } catch (error) {
       res.status(400).send(error);
     }
   };
 
-  deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
+  deleteCategory = async (req: Request, res: Response) => {
     try {
       await store.delete({ id: parseInt(req.params.id) });
-      res.status(200).send({ message: 'Category deleted with success' });
+      res.status(200).send({ message: categoryMessages.deletedWithSuccess });
     } catch (error) {
       res.status(400).send(error);
     }

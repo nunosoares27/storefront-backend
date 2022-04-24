@@ -1,5 +1,6 @@
 import Client from '../database';
 import { Category, CreateCategoryDTO, EditCategoryDTO, DeleteCategoryDTO } from '../interfaces/index';
+import { categoryMessages } from '../helpers/messages';
 
 export class Store {
   async index(): Promise<Category[]> {
@@ -10,7 +11,7 @@ export class Store {
       db_connection.release();
       return categories.rows;
     } catch (error) {
-      throw new Error(`Cannot get categories =(, ${error} )`);
+      throw new Error(categoryMessages.getCategoriesFail(error));
     }
   }
 
@@ -22,7 +23,7 @@ export class Store {
       db_connection.release();
       return category.rows[0];
     } catch (error) {
-      throw new Error(`Cannot create Category =(, ${error} )`);
+      throw new Error(categoryMessages.getCategoryFail(error));
     }
   }
 
@@ -34,7 +35,7 @@ export class Store {
       db_connection.release();
       return newCategory.rows[0];
     } catch (error) {
-      throw new Error(`Cannot create Category =(, ${error} )`);
+      throw new Error(categoryMessages.createCategoryFail(error));
     }
   }
 
@@ -46,7 +47,7 @@ export class Store {
       db_connection.release();
       return 'updated with Sucess';
     } catch (error) {
-      throw new Error(`Cannot edit Category =(, ${error} )`);
+      throw new Error(categoryMessages.editCategoryFail(error));
     }
   }
 
@@ -58,7 +59,7 @@ export class Store {
       db_connection.release();
       return 'deleted with sucess';
     } catch (error) {
-      throw new Error(`Cannot delete Category =(, ${error} )`);
+      throw new Error(categoryMessages.deleteCategoryFail(error));
     }
   }
 }
