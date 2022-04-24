@@ -7,7 +7,9 @@ const categoryService = new CategoryService();
 
 CategoryController.get('/', async (req: Request, res: Response, next: NextFunction) => categoryService.getCategories(req, res, next));
 CategoryController.post('/', async (req: Request, res: Response, next: NextFunction) => categoryService.createCategory(req, res, next));
-CategoryController.put('/:id', async (req: Request, res: Response, next: NextFunction) => categoryService.editCategory(req, res, next));
+CategoryController.put('/:id', validateCategoryId, async (req: Request, res: Response, next: NextFunction) =>
+  categoryService.editCategory(req, res, next),
+);
 CategoryController.delete('/:id', validateCategoryId, async (req: Request, res: Response, next: NextFunction) =>
   categoryService.deleteCategory(req, res, next),
 );
