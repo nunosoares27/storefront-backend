@@ -8,3 +8,10 @@ export const categoryMessages = {
   getCategoriesFail: (error: string): string => `Cannot get categories =(, ${error} )`,
   getCategoryFail: (error: string): string => `Cannot get category =(, ${error} )`,
 };
+
+export const productMessages = {
+  createProductFail: (error: string): string => `Cannot create Product =(, ${error} )`,
+  getProductsFail: (error: string): string => `Cannot get products =(, ${error} )`,
+  theresNoProductWithId: (id: string): string => `Theres no product by id ${id}`,
+  getProductFail: (error: string): string => `Cannot get product =(, ${error} )`,
+};
