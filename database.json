@@ -2,7 +2,7 @@
     "dev": {
       "driver": "pg",
       "host": "localhost",
-      "port" : 5432,
+      "port" : 5433,
       "database": "storefront",
       "user": "theboss",
       "password": "DPLG"
@@ -10,7 +10,7 @@
     "test": {
       "driver": "pg",
       "host": "localhost",
-      "port" : 5432,
+      "port" : 5433,
       "database": "storefront_testing",
       "user": "theboss",
       "password": "DPLG"
