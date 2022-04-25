@@ -10,7 +10,8 @@ class CategoryService {
       const categories = await store.index();
       res.status(200).send(categories);
     } catch (error) {
-      res.status(400).send(error);
+      res.statusMessage = error;
+      res.status(400).end();
     }
   };
 
@@ -20,7 +21,8 @@ class CategoryService {
       if (!category) res.status(200).send({ message: categoryMessages.theresNoCategoryWithId(req.params.id) });
       res.status(200).send(category);
     } catch (error) {
-      res.status(400).send(error);
+      res.statusMessage = error;
+      res.status(400).end();
     }
   };
 
@@ -29,16 +31,17 @@ class CategoryService {
       const newCategory = await store.create(req.body.name);
       res.status(201).send(newCategory);
     } catch (error) {
-      res.status(400).send(error);
+      res.statusMessage = error;
+      res.status(400).end();
     }
   };
 
   editCategory = async (req: Request, res: Response) => {
     try {
       await store.update({ id: parseInt(req.params.id), name: req.body.name });
-      res.status(201).send({ message: categoryMessages.editWithSuccess });
+      res.status(200).send({ message: categoryMessages.editWithSuccess });
     } catch (error) {
-      res.status(400).send(error);
+      res.status(204).send(error);
     }
   };
 
@@ -47,7 +50,8 @@ class CategoryService {
       await store.delete({ id: parseInt(req.params.id) });
       res.status(200).send({ message: categoryMessages.deletedWithSuccess });
     } catch (error) {
-      res.status(400).send(error);
+      res.statusMessage = error;
+      res.status(400).end();
     }
   };
 }

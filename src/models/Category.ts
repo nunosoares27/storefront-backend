@@ -45,7 +45,7 @@ export class Store {
       const sql = 'UPDATE categories SET name = $1 where id = $2';
       const updateCategory = await db_connection.query(sql, [name, id]);
       db_connection.release();
-      return 'updated with Sucess';
+      return categoryMessages.editWithSuccess;
     } catch (error) {
       throw new Error(categoryMessages.editCategoryFail(error));
     }
@@ -57,7 +57,7 @@ export class Store {
       const sql = 'DELETE FROM categories WHERE id = $1';
       await db_connection.query(sql, [id]);
       db_connection.release();
-      return 'deleted with sucess';
+      return categoryMessages.deletedWithSuccess;
     } catch (error) {
       throw new Error(categoryMessages.deleteCategoryFail(error));
     }
