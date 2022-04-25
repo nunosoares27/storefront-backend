@@ -35,3 +35,7 @@ export interface EditProductDTO {
   price?: number;
   category_id?: number;
 }
+
+export interface DeleteProductDTO {
+  id: number;
+}

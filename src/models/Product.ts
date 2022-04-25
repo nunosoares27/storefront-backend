@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import Client from '../database';
-import { Product, CreateProductDTO } from '../interfaces/index';
+import { Product, CreateProductDTO, DeleteProductDTO } from '../interfaces/index';
 import { productMessages } from '../helpers/messages';
 
 export class Store {
@@ -9,6 +9,18 @@ export class Store {
       const db_connection = await Client.connect();
       const sql = 'SELECT * FROM products';
       const products = await db_connection.query(sql);
+      db_connection.release();
+      return products.rows;
+    } catch (error) {
+      throw new Error(productMessages.getProductsFail(error));
+    }
+  }
+
+  async productsByCategory(id: number): Promise<Product[]> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'SELECT * FROM products WHERE category_id = $1';
+      const products = await db_connection.query(sql, [id]);
       db_connection.release();
       return products.rows;
     } catch (error) {
@@ -66,6 +78,18 @@ export class Store {
       return productMessages.editWithSuccess;
     } catch (error) {
       throw new Error(productMessages.editProductFail(error));
+    }
+  }
+
+  async delete({ id }: DeleteProductDTO): Promise<string> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'DELETE FROM products WHERE id = $1';
+      await db_connection.query(sql, [id]);
+      db_connection.release();
+      return productMessages.deletedWithSuccess;
+    } catch (error) {
+      throw new Error(productMessages.deleteProductFail(error));
     }
   }
 }

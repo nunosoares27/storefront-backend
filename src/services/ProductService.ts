@@ -14,7 +14,15 @@ class ProductService {
       res.status(400).end();
     }
   };
-  getProductsByCategory = async (req: Request, res: Response) => await res.status(200).end('List of products by Category');
+  getProductsByCategory = async (req: Request, res: Response) => {
+    try {
+      const products = await store.productsByCategory(parseInt(req.params.id));
+      res.status(200).send(products);
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
   getMostPopularProducts = async (req: Request, res: Response) => await res.status(200).end('List of 5 most popular products');
   getProductById = async (req: Request, res: Response) => {
     try {
@@ -45,8 +53,15 @@ class ProductService {
       res.status(400).end();
     }
   };
-  deleteProduct = async (req: Request, res: Response) => await res.status(200).end('Delete product');
-  deleteCategory = async (req: Request, res: Response) => await res.status(200).end('Delete category');
+  deleteProduct = async (req: Request, res: Response) => {
+    try {
+      await store.delete({ id: parseInt(req.params.id) });
+      res.status(200).send({ message: productMessages.deletedWithSuccess });
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
 }
 
 export default ProductService;

@@ -10,5 +10,4 @@ ProductController.get('/most-popular', async (req: Request, res: Response) => pr
 ProductController.post('/', async (req: Request, res: Response) => productService.createProduct(req, res));
 ProductController.put('/:id', async (req: Request, res: Response) => productService.editProduct(req, res));
 ProductController.delete('/:id', async (req: Request, res: Response) => productService.deleteProduct(req, res));
-ProductController.delete('/category/:id', async (req: Request, res: Response) => productService.deleteCategory(req, res));
 ProductController.get('/:id', async (req: Request, res: Response) => productService.getProductById(req, res));
