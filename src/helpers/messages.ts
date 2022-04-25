@@ -14,4 +14,8 @@ export const productMessages = {
   getProductsFail: (error: string): string => `Cannot get products =(, ${error} )`,
   theresNoProductWithId: (id: string): string => `Theres no product by id ${id}`,
   getProductFail: (error: string): string => `Cannot get product =(, ${error} )`,
+  editWithSuccess: 'Product edited with success',
+  deletedWithSuccess: 'Product deleted with success',
+  deleteProductFail: (error: string): string => `Cannot delete Product =(, ${error} )`,
+  editProductFail: (error: string): string => `Cannot edit Product =(, ${error} )`,
 };

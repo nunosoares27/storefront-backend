@@ -28,3 +28,10 @@ export interface CreateProductDTO {
   price: number;
   category_id?: number;
 }
+
+export interface EditProductDTO {
+  id: number;
+  name?: string;
+  price?: number;
+  category_id?: number;
+}

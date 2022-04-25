@@ -1,5 +1,6 @@
+import { Request } from 'express';
 import Client from '../database';
-import { Product, CreateProductDTO } from '../interfaces/index';
+import { Product, CreateProductDTO, EditProductDTO } from '../interfaces/index';
 import { productMessages } from '../helpers/messages';
 
 export class Store {
@@ -36,6 +37,30 @@ export class Store {
       return newProduct.rows[0];
     } catch (error) {
       throw new Error(productMessages.createProductFail(error));
+    }
+  }
+
+  async update(req: Request): Promise<string> {
+    const requestBodyParams = Object.keys(req.body);
+    const id = req.params.id;
+
+    try {
+      const db_connection = await Client.connect();
+      let sql;
+      if (requestBodyParams.length > 1) {
+        sql = `UPDATE products SET ${requestBodyParams.includes('name') ? `name = '${req.body['name']}', ` : ''} ${
+          requestBodyParams.includes('price') ? `price = ${req.body['price']}, ` : ''
+        } ${requestBodyParams.includes('category_id') ? `category_id = ${req.body['category_id']}` : ''} where id = ${id}`;
+      } else {
+        sql = `UPDATE products SET ${requestBodyParams.includes('name') ? `name = '${req.body['name']}'` : ''} ${
+          requestBodyParams.includes('price') ? `price = ${req.body['price']}` : ''
+        } ${requestBodyParams.includes('category_id') ? `category_id = ${req.body['category_id']}` : ''} where id = ${id}`;
+      }
+      await db_connection.query(sql);
+      db_connection.release();
+      return productMessages.editWithSuccess;
+    } catch (error) {
+      throw new Error(productMessages.editProductFail(error));
     }
   }
 }
