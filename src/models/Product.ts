@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import Client from '../database';
-import { Product, CreateProductDTO, EditProductDTO } from '../interfaces/index';
+import { Product, CreateProductDTO } from '../interfaces/index';
 import { productMessages } from '../helpers/messages';
 
 export class Store {
@@ -44,17 +44,22 @@ export class Store {
     const requestBodyParams = Object.keys(req.body);
     const id = req.params.id;
 
+    if (requestBodyParams.length === 0) {
+      throw new Error(productMessages.provideAtLeastOneParam);
+    }
+
     try {
       const db_connection = await Client.connect();
-      let sql;
-      if (requestBodyParams.length > 1) {
-        sql = `UPDATE products SET ${requestBodyParams.includes('name') ? `name = '${req.body['name']}', ` : ''} ${
-          requestBodyParams.includes('price') ? `price = ${req.body['price']}, ` : ''
-        } ${requestBodyParams.includes('category_id') ? `category_id = ${req.body['category_id']}` : ''} where id = ${id}`;
-      } else {
-        sql = `UPDATE products SET ${requestBodyParams.includes('name') ? `name = '${req.body['name']}'` : ''} ${
-          requestBodyParams.includes('price') ? `price = ${req.body['price']}` : ''
-        } ${requestBodyParams.includes('category_id') ? `category_id = ${req.body['category_id']}` : ''} where id = ${id}`;
+      /* 
+        The api user can provide one param or more.
+        If the user provide only one param we need to remove the ',' otherwise the sql fails.
+      */
+      let sql = `UPDATE products SET ${requestBodyParams.includes('name') ? `name = '${req.body['name']}', ` : ''} ${
+        requestBodyParams.includes('price') ? `price = ${req.body['price']}, ` : ''
+      } ${requestBodyParams.includes('category_id') ? `category_id = ${req.body['category_id']}` : ''} where id = ${id}`;
+
+      if (requestBodyParams.length < 2) {
+        sql = sql.replace(',', '');
       }
       await db_connection.query(sql);
       db_connection.release();

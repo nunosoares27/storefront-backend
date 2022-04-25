@@ -18,4 +18,5 @@ export const productMessages = {
   deletedWithSuccess: 'Product deleted with success',
   deleteProductFail: (error: string): string => `Cannot delete Product =(, ${error} )`,
   editProductFail: (error: string): string => `Cannot edit Product =(, ${error} )`,
+  provideAtLeastOneParam: 'Provide at least one param on body',
 };
