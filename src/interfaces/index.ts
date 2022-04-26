@@ -39,3 +39,22 @@ export interface EditProductDTO {
 export interface DeleteProductDTO {
   id: number;
 }
+
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
+export interface RegisterUserDTO {
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
+export interface LoginUserDTO {
+  firstName: string;
+  lastName: string;
+  password: string;
+}

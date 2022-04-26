@@ -1,10 +1,11 @@
 import { Request, Response, Router } from 'express';
 import ProductService from '../services/ProductService';
+import { validateToken } from '../middlewares/validateToken';
 
 export const ProductController: Router = Router();
 const productService = new ProductService();
 
-ProductController.get('/', async (req: Request, res: Response) => productService.getProducts(req, res));
+ProductController.get('/', validateToken, async (req: Request, res: Response) => productService.getProducts(req, res));
 ProductController.get('/category/:id', async (req: Request, res: Response) => productService.getProductsByCategory(req, res));
 ProductController.get('/most-popular', async (req: Request, res: Response) => productService.getMostPopularProducts(req, res));
 ProductController.post('/', async (req: Request, res: Response) => productService.createProduct(req, res));

@@ -20,3 +20,13 @@ export const productMessages = {
   editProductFail: (error: string): string => `Cannot edit Product =(, ${error} )`,
   provideAtLeastOneParam: 'Provide at least one param on body',
 };
+
+export const userMessages = {
+  missingFields: 'Missing fields! Please make sure you provide firstName, lastName and password!',
+  registerUserFail: (error: string): string => `Could not add new user =(. ${error}`,
+  registerUserFailGeneric: 'Failed to create user',
+  invalidToken: 'Access denied, invalid token',
+  getusersFail: (error: string): string => `Cannot get users =(, ${error} )`,
+  loginFail: 'Login failed =(',
+  loginFailWithError: (error: string): string => `Could not login user =(. ${error}`,
+};
