@@ -17,7 +17,7 @@ class UserService {
 
   login = async (req: Request, res: Response) => {
     try {
-      const user = await store.login(req.body);
+      const user = await store.login(res, req.body);
       res.status(200).send(user);
     } catch (error) {
       res.statusMessage = error;
@@ -27,7 +27,7 @@ class UserService {
 
   register = async (req: Request, res: Response) => {
     try {
-      const user = await store.register(req.body);
+      const user = await store.register(res, req.body);
       if (user) {
         res.status(200).send(user);
       } else {
