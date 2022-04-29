@@ -1,7 +1,8 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
+import cors from 'cors';
 import { routes } from './routes';
 
 export const server: Application = express();
-server.use(bodyParser.json());
+server.use(express.json());
+server.use(cors());
 routes(server);
