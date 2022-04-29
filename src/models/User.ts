@@ -1,9 +1,9 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import Client from '../database';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { RegisterUserDTO, User, LoginUserDTO } from '../interfaces/index';
+import { RegisterUserDTO, User, LoginUserDTO, DeleteUserDTO } from '../interfaces/index';
 import { userMessages } from '../helpers/messages';
 
 dotenv.config();
@@ -21,6 +21,18 @@ export class Store {
       return users.rows;
     } catch (error) {
       throw new Error(userMessages.getusersFail(error));
+    }
+  }
+
+  async getById(id: number): Promise<User> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'SELECT firstName, lastName FROM users where id = $1';
+      const user = await db_connection.query(sql, [id]);
+      db_connection.release();
+      return user.rows[0];
+    } catch (error) {
+      throw new Error(userMessages.getUserFail(error));
     }
   }
 
@@ -65,6 +77,47 @@ export class Store {
       } catch (error) {
         throw new Error(userMessages.registerUserFail(error));
       }
+    }
+  }
+
+  async edit(req: Request): Promise<string> {
+    const requestBodyParams = Object.keys(req.body);
+    const id = req.params.id;
+
+    if (requestBodyParams.length === 0) {
+      throw new Error(userMessages.provideAtLeastOneParam);
+    }
+    try {
+      const db_connection = await Client.connect();
+      /* 
+        The api user can provide one param or more.
+        If the user provide only one param we need to remove the ',' otherwise the sql fails.
+      */
+      let sql = `UPDATE users SET ${requestBodyParams.includes('firstName') ? `firstName = '${req.body['firstName']}', ` : ''} ${
+        requestBodyParams.includes('lastName') ? `lastName = ${req.body['lastName']}, ` : ''
+      } ${requestBodyParams.includes('password') ? `password = ${req.body['password']}` : ''} where id = ${id}`;
+
+      if (requestBodyParams.length < 2) {
+        sql = sql.replace(',', '');
+      }
+
+      await db_connection.query(sql);
+      db_connection.release();
+      return userMessages.editWithSuccess;
+    } catch (error) {
+      throw new Error(userMessages.editUserFail(error));
+    }
+  }
+
+  async delete({ id }: DeleteUserDTO): Promise<string> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'DELETE FROM users WHERE id = $1';
+      await db_connection.query(sql, [id]);
+      db_connection.release();
+      return userMessages.deletedWithSuccess;
+    } catch (error) {
+      throw new Error(userMessages.deleteUserFail(error));
     }
   }
 }

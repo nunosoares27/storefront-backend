@@ -58,3 +58,7 @@ export interface LoginUserDTO {
   lastName: string;
   password: string;
 }
+
+export interface DeleteUserDTO {
+  id: number;
+}

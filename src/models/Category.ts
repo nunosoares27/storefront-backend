@@ -43,7 +43,7 @@ export class Store {
     try {
       const db_connection = await Client.connect();
       const sql = 'UPDATE categories SET name = $1 where id = $2';
-      const updateCategory = await db_connection.query(sql, [name, id]);
+      await db_connection.query(sql, [name, id]);
       db_connection.release();
       return categoryMessages.editWithSuccess;
     } catch (error) {
