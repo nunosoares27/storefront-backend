@@ -37,3 +37,8 @@ export const userMessages = {
   theresNoUserWithId: (id: string): string => `Theres no user by id ${id}`,
   getUserFail: (error: string): string => `Cannot get user =(, ${error} )`,
 };
+
+export const orderMessages = {
+  theresNoOrderWithId: (id: string): string => `Theres no order by id ${id}`,
+  getOrderFail: (error: string): string => `Cannot get order =(, ${error} )`,
+};
