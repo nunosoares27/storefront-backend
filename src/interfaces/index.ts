@@ -62,3 +62,23 @@ export interface LoginUserDTO {
 export interface DeleteUserDTO {
   id: number;
 }
+
+export interface Order {
+  id: number;
+  user_id: number;
+  status: boolean;
+}
+
+export interface CreateOrderDTO {
+  user_id: number;
+  status: boolean;
+}
+
+export interface EditOrderDTO {
+  user_id?: number;
+  status?: boolean;
+}
+
+export interface DeleteOrderDTO {
+  id: number;
+}
