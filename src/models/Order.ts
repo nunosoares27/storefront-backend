@@ -16,6 +16,18 @@ export class Store {
     }
   }
 
+  async getById(id: number): Promise<Order> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'SELECT * FROM orders where id = $1';
+      const order = await db_connection.query(sql, [id]);
+      db_connection.release();
+      return order.rows[0];
+    } catch (error) {
+      throw new Error(orderMessages.getOrderFail(error));
+    }
+  }
+
   async create({ user_id, status }: CreateOrderDTO): Promise<Order> {
     try {
       const db_connection = await Client.connect();

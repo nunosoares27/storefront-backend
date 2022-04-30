@@ -11,4 +11,4 @@ OrderController.get('/', validateToken, async (req: Request, res: Response) => o
 OrderController.post('/', validateToken, validateUserId, async (req: Request, res: Response) => orderService.createOrder(req, res));
 OrderController.put('/:id', validateToken, validateOrderId, validateUserId, async (req: Request, res: Response) => orderService.editOrder(req, res));
 OrderController.delete('/:id', validateToken, validateOrderId, async (req: Request, res: Response) => orderService.deleteOrder(req, res));
-// OrderController.get('/:id', async (req: Request, res: Response) => orderService.getProductById(req, res));
+OrderController.get('/:id', validateToken, validateOrderId, async (req: Request, res: Response) => orderService.getOrderById(req, res));
