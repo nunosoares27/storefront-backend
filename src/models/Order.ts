@@ -9,9 +9,10 @@ export class Store {
       const db_connection = await Client.connect();
       const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
         JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
-        'price', p.price, 'quantity', op.quantity)) AS products,
+        'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name)) AS products,
         o.status AS complete FROM orders AS o Left JOIN orders_products AS op
         ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
+        LEFT JOIN categories AS c ON c.id = p.category_id
         LEFT JOIN users AS u ON u.id = o.user_id GROUP BY o.id, u.firstName,
         u.lastName, o.status, u.id ORDER BY o.id`;
       const orders = await db_connection.query(sql);
@@ -27,9 +28,10 @@ export class Store {
       const db_connection = await Client.connect();
       const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
       JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
-      'price', p.price, 'quantity', op.quantity)) AS products,
+      'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name)) AS products,
       o.status AS complete FROM orders AS o Left JOIN orders_products AS op
       ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
+      LEFT JOIN categories AS c ON c.id = p.category_id
       LEFT JOIN users AS u ON u.id = o.user_id WHERE o.id = $1
       GROUP BY o.id, u.firstName, u.lastName, o.status, u.id ORDER BY o.id`;
       const order = await db_connection.query(sql, [id]);
