@@ -18,7 +18,7 @@ export class Store {
   async getById(id: number): Promise<Category> {
     try {
       const db_connection = await Client.connect();
-      const sql = 'SELECT * FROM categories where id = $1';
+      const sql = 'SELECT * FROM categories WHERE id = $1';
       const category = await db_connection.query(sql, [id]);
       db_connection.release();
       return category.rows[0];
@@ -42,7 +42,7 @@ export class Store {
   async update({ id, name }: EditCategoryDTO): Promise<string> {
     try {
       const db_connection = await Client.connect();
-      const sql = 'UPDATE categories SET name = $1 where id = $2';
+      const sql = 'UPDATE categories SET name = $1 WHERE id = $2';
       await db_connection.query(sql, [name, id]);
       db_connection.release();
       return categoryMessages.editWithSuccess;

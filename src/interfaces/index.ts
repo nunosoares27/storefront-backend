@@ -82,3 +82,9 @@ export interface EditOrderDTO {
 export interface DeleteOrderDTO {
   id: number;
 }
+
+export interface AddProductToOrderDTO {
+  id: number;
+  product_id: number;
+  quantity: number;
+}

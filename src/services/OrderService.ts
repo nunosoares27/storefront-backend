@@ -55,6 +55,16 @@ class OrderService {
       res.status(400).end();
     }
   };
+
+  addProductToOrder = async (req: Request, res: Response) => {
+    try {
+      const newProduct = await store.addProduct({ id: parseInt(req.params.id), product_id: req.body.product_id, quantity: req.body.quantity });
+      res.status(201).send(newProduct);
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
 }
 
 export default OrderService;

@@ -3,6 +3,7 @@ import OrderService from '../services/OrderService';
 import { validateToken } from '../middlewares/validateToken';
 import validateUserId from '../middlewares/validateUserId';
 import validateOrderId from '../middlewares/validateOrderId';
+import validateProductId from '../middlewares/validateProductId';
 
 export const OrderController: Router = Router();
 const orderService = new OrderService();
@@ -12,3 +13,6 @@ OrderController.post('/', validateToken, validateUserId, async (req: Request, re
 OrderController.put('/:id', validateToken, validateOrderId, validateUserId, async (req: Request, res: Response) => orderService.editOrder(req, res));
 OrderController.delete('/:id', validateToken, validateOrderId, async (req: Request, res: Response) => orderService.deleteOrder(req, res));
 OrderController.get('/:id', validateToken, validateOrderId, async (req: Request, res: Response) => orderService.getOrderById(req, res));
+OrderController.post('/:id/product', validateToken, validateOrderId, validateProductId, async (req: Request, res: Response) =>
+  orderService.addProductToOrder(req, res),
+);

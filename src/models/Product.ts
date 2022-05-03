@@ -31,7 +31,7 @@ export class Store {
   async getById(id: number): Promise<Product> {
     try {
       const db_connection = await Client.connect();
-      const sql = 'SELECT * FROM products where id = $1';
+      const sql = 'SELECT * FROM products WHERE id = $1';
       const product = await db_connection.query(sql, [id]);
       db_connection.release();
       return product.rows[0];
