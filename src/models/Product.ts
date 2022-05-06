@@ -7,7 +7,8 @@ export class Store {
   async index(): Promise<Product[]> {
     try {
       const db_connection = await Client.connect();
-      const sql = 'SELECT * FROM products';
+      const sql = `SELECT p.id, p.price, p.name, c.id AS category_id, c.name AS category_name
+        FROM products AS p LEFT JOIN categories AS c ON c.id = p.category_id;`;
       const products = await db_connection.query(sql);
       db_connection.release();
       return products.rows;
@@ -31,7 +32,9 @@ export class Store {
   async getById(id: number): Promise<Product> {
     try {
       const db_connection = await Client.connect();
-      const sql = 'SELECT * FROM products where id = $1';
+      const sql = `SELECT p.id, p.price, p.name, c.id AS category_id, c.name AS category_name
+        FROM products AS p LEFT JOIN categories AS c ON c.id = p.category_id WHERE p.id = $1
+        ORDER BY p.id`;
       const product = await db_connection.query(sql, [id]);
       db_connection.release();
       return product.rows[0];

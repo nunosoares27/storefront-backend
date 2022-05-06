@@ -37,3 +37,17 @@ export const userMessages = {
   theresNoUserWithId: (id: string): string => `Theres no user by id ${id}`,
   getUserFail: (error: string): string => `Cannot get user =(, ${error} )`,
 };
+
+export const orderMessages = {
+  theresNoOrderWithId: (id: string): string => `Theres no order by id ${id}`,
+  getOrderFail: (error: string): string => `Cannot get order =(, ${error} )`,
+  getOrdersFail: (error: string): string => `Cannot get orders =(, ${error} )`,
+  createOrderFail: (error: string): string => `Could not add new order =(. ${error}`,
+  editWithSuccess: 'Order edited with success',
+  editOrderFail: (error: string): string => `Cannot edit Product =(, ${error} )`,
+  provideAtLeastOneParam: 'Provide at least one param on body',
+  deletedWithSuccess: 'Order deleted with success',
+  deleteOrderFail: (error: string): string => `Cannot delete Order =(, ${error} )`,
+  deletedProductFromOrder: 'Product deleted from order with success',
+  deleteProductOrderFail: (error: string): string => `Cannot delete product from Order =(, ${error} )`,
+};
