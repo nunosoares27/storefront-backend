@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import Client from '../database';
-import { Order, CreateOrderDTO, DeleteOrderDTO, AddProductToOrderDTO } from '../interfaces/index';
+import { Order, CreateOrderDTO, DeleteOrderDTO, AddProductToOrderDTO, EditProductToOrderDTO, DeleteProductToOrderDTO } from '../interfaces/index';
 import { orderMessages } from '../helpers/messages';
 
 export class Store {
@@ -8,9 +8,10 @@ export class Store {
     try {
       const db_connection = await Client.connect();
       const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
-        JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
-        'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name)) AS products,
-        o.status AS complete FROM orders AS o Left JOIN orders_products AS op
+         COALESCE(JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
+        'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name))
+        FILTER (WHERE p.id IS NOT NULL), '[]') AS products,
+        o.status AS complete FROM orders AS o LEFT JOIN orders_products AS op
         ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
         LEFT JOIN categories AS c ON c.id = p.category_id
         LEFT JOIN users AS u ON u.id = o.user_id GROUP BY o.id, u.firstName,
@@ -27,8 +28,9 @@ export class Store {
     try {
       const db_connection = await Client.connect();
       const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
-      JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
-      'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name)) AS products,
+      COALESCE(JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
+      'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name))
+      FILTER (WHERE p.id IS NOT NULL), '[]') AS products,
       o.status AS complete FROM orders AS o Left JOIN orders_products AS op
       ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
       LEFT JOIN categories AS c ON c.id = p.category_id
@@ -104,6 +106,30 @@ export class Store {
       return newProduct.rows[0];
     } catch (error) {
       throw new Error(orderMessages.createOrderFail(error));
+    }
+  }
+
+  async editProduct({ id, product_id, quantity }: EditProductToOrderDTO): Promise<Order> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'UPDATE orders_products SET order_id = $1, product_id = $2, quantity= $3 WHERE order_id=$1 AND product_id = $2';
+      const editProduct = await db_connection.query(sql, [id, product_id, quantity]);
+      db_connection.release();
+      return editProduct.rows[0];
+    } catch (error) {
+      throw new Error(orderMessages.editOrderFail(error));
+    }
+  }
+
+  async deleteProduct({ id, product_id }: DeleteProductToOrderDTO): Promise<string> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = 'DELETE FROM orders_products WHERE order_id=$1 AND product_id = $2';
+      const deleteProduct = await db_connection.query(sql, [id, product_id]);
+      db_connection.release();
+      return orderMessages.deletedProductFromOrder;
+    } catch (error) {
+      throw new Error(orderMessages.deleteProductOrderFail(error));
     }
   }
 }

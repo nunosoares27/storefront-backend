@@ -88,3 +88,14 @@ export interface AddProductToOrderDTO {
   product_id: number;
   quantity: number;
 }
+
+export interface EditProductToOrderDTO {
+  id: number;
+  product_id: number;
+  quantity: number;
+}
+
+export interface DeleteProductToOrderDTO {
+  id: number;
+  product_id: number;
+}

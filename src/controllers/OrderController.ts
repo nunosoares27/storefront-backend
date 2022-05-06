@@ -16,3 +16,9 @@ OrderController.get('/:id', validateToken, validateOrderId, async (req: Request,
 OrderController.post('/:id/product', validateToken, validateOrderId, validateProductId, async (req: Request, res: Response) =>
   orderService.addProductToOrder(req, res),
 );
+OrderController.put('/:id/product', validateToken, validateOrderId, validateProductId, async (req: Request, res: Response) =>
+  orderService.editProductToOrder(req, res),
+);
+OrderController.delete('/:id/product/:product_id', validateToken, validateOrderId, validateProductId, async (req: Request, res: Response) =>
+  orderService.deleteProductToOrder(req, res),
+);

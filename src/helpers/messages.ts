@@ -48,4 +48,6 @@ export const orderMessages = {
   provideAtLeastOneParam: 'Provide at least one param on body',
   deletedWithSuccess: 'Order deleted with success',
   deleteOrderFail: (error: string): string => `Cannot delete Order =(, ${error} )`,
+  deletedProductFromOrder: 'Product deleted from order with success',
+  deleteProductOrderFail: (error: string): string => `Cannot delete product from Order =(, ${error} )`,
 };

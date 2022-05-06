@@ -65,6 +65,26 @@ class OrderService {
       res.status(400).end();
     }
   };
+
+  editProductToOrder = async (req: Request, res: Response) => {
+    try {
+      await store.editProduct({ id: parseInt(req.params.id), product_id: req.body.product_id, quantity: req.body.quantity });
+      res.status(200).send({ message: orderMessages.editWithSuccess });
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
+
+  deleteProductToOrder = async (req: Request, res: Response) => {
+    try {
+      await store.deleteProduct({ id: parseInt(req.params.id), product_id: parseInt(req.params.product_id) });
+      res.status(200).send({ message: orderMessages.deletedWithSuccess });
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
 }
 
 export default OrderService;

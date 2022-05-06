@@ -14,6 +14,7 @@ class ProductService {
       res.status(400).end();
     }
   };
+
   getProductsByCategory = async (req: Request, res: Response) => {
     try {
       const products = await store.productsByCategory(parseInt(req.params.id));
@@ -23,7 +24,7 @@ class ProductService {
       res.status(400).end();
     }
   };
-  getMostPopularProducts = async (req: Request, res: Response) => await res.status(200).end('List of 5 most popular products');
+
   getProductById = async (req: Request, res: Response) => {
     try {
       const product = await store.getById(parseInt(req.params.id));
@@ -35,6 +36,7 @@ class ProductService {
       res.status(400).end();
     }
   };
+
   createProduct = async (req: Request, res: Response) => {
     try {
       const newProduct = await store.create({ name: req.body.name, price: req.body.price, category_id: req.body.category_id });
@@ -44,6 +46,7 @@ class ProductService {
       res.status(400).end();
     }
   };
+
   editProduct = async (req: Request, res: Response) => {
     try {
       await store.update(req);
@@ -53,6 +56,7 @@ class ProductService {
       res.status(400).end();
     }
   };
+
   deleteProduct = async (req: Request, res: Response) => {
     try {
       await store.delete({ id: parseInt(req.params.id) });
