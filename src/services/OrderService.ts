@@ -15,6 +15,26 @@ class OrderService {
     }
   };
 
+  getCurrentOrdersByUser = async (req: Request, res: Response) => {
+    try {
+      const orders = await store.indexCurrentByUser(parseInt(req.params.id));
+      res.status(200).send(orders);
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
+
+  getCompletedOrdersByUser = async (req: Request, res: Response) => {
+    try {
+      const orders = await store.indexCompletedByUser(parseInt(req.params.id));
+      res.status(200).send(orders);
+    } catch (error) {
+      res.statusMessage = error;
+      res.status(400).end();
+    }
+  };
+
   getOrderById = async (req: Request, res: Response) => {
     try {
       const order = await store.getById(parseInt(req.params.id));
@@ -25,6 +45,17 @@ class OrderService {
       res.status(400).end();
     }
   };
+
+  // getCurrentOrderById = async (req: Request, res: Response) => {
+  //   try {
+  //     const order = await store.getCurrentById(parseInt(req.params.id));
+  //     if (!order) res.status(200).send({ message: orderMessages.theresNoOrderWithId(req.params.id) });
+  //     res.status(200).send(order);
+  //   } catch (error) {
+  //     res.statusMessage = error;
+  //     res.status(400).end();
+  //   }
+  // };
 
   createOrder = async (req: Request, res: Response) => {
     try {

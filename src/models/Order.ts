@@ -24,6 +24,46 @@ export class Store {
     }
   }
 
+  async indexCurrentByUser(id: number): Promise<Order[]> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
+         COALESCE(JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
+        'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name))
+        FILTER (WHERE p.id IS NOT NULL), '[]') AS products,
+        o.status AS complete FROM orders AS o LEFT JOIN orders_products AS op
+        ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
+        LEFT JOIN categories AS c ON c.id = p.category_id
+        LEFT JOIN users AS u ON u.id = o.user_id WHERE u.id = $1 AND o.status = false GROUP BY o.id, u.firstName,
+        u.lastName, o.status, u.id ORDER BY o.id`;
+      const orders = await db_connection.query(sql, [id]);
+      db_connection.release();
+      return orders.rows;
+    } catch (error) {
+      throw new Error(orderMessages.getOrdersFail(error));
+    }
+  }
+
+  async indexCompletedByUser(id: number): Promise<Order[]> {
+    try {
+      const db_connection = await Client.connect();
+      const sql = `SELECT o.id AS order_id, u.id as user_id, u.firstName, u.lastName,
+         COALESCE(JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name,
+        'price', p.price, 'quantity', op.quantity, 'category_id', c.id, 'category_name', c.name))
+        FILTER (WHERE p.id IS NOT NULL), '[]') AS products,
+        o.status AS complete FROM orders AS o LEFT JOIN orders_products AS op
+        ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id
+        LEFT JOIN categories AS c ON c.id = p.category_id
+        LEFT JOIN users AS u ON u.id = o.user_id WHERE u.id = $1 AND o.status = true GROUP BY o.id, u.firstName,
+        u.lastName, o.status, u.id ORDER BY o.id`;
+      const orders = await db_connection.query(sql, [id]);
+      db_connection.release();
+      return orders.rows;
+    } catch (error) {
+      throw new Error(orderMessages.getOrdersFail(error));
+    }
+  }
+
   async getById(id: number): Promise<Order[]> {
     try {
       const db_connection = await Client.connect();

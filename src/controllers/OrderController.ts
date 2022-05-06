@@ -9,6 +9,8 @@ export const OrderController: Router = Router();
 const orderService = new OrderService();
 
 OrderController.get('/', validateToken, async (req: Request, res: Response) => orderService.getOrders(req, res));
+OrderController.get('/current/:id', validateToken, async (req: Request, res: Response) => orderService.getCurrentOrdersByUser(req, res));
+OrderController.get('/completed/:id', validateToken, async (req: Request, res: Response) => orderService.getCompletedOrdersByUser(req, res));
 OrderController.post('/', validateToken, validateUserId, async (req: Request, res: Response) => orderService.createOrder(req, res));
 OrderController.put('/:id', validateToken, validateOrderId, validateUserId, async (req: Request, res: Response) => orderService.editOrder(req, res));
 OrderController.delete('/:id', validateToken, validateOrderId, async (req: Request, res: Response) => orderService.deleteOrder(req, res));
