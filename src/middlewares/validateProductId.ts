@@ -18,5 +18,5 @@ export default async function validateProductId(req: Request, res: Response, nex
       throw new Error(productMessages.getProductFail(error));
     }
   }
-  if (!req.body.product_id) next();
+  if (!req.body.product_id && !req.params.product_id) next();
 }

@@ -125,7 +125,7 @@ export class Store {
     try {
       const db_connection = await Client.connect();
       const sql = 'DELETE FROM orders_products WHERE order_id=$1 AND product_id = $2';
-      const deleteProduct = await db_connection.query(sql, [id, product_id]);
+      await db_connection.query(sql, [id, product_id]);
       db_connection.release();
       return orderMessages.deletedProductFromOrder;
     } catch (error) {
