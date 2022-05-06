@@ -86,10 +86,15 @@ export class Store {
   }
 
   async delete({ id }: DeleteOrderDTO): Promise<string> {
+    /* Before we try to delete a order we need to delete first all products associated with the order on
+     ** the orders_products table.
+     */
     try {
       const db_connection = await Client.connect();
-      const sql = 'DELETE FROM orders WHERE id = $1';
-      await db_connection.query(sql, [id]);
+      const deleteProductsFromOrderSql = 'DELETE FROM orders_products WHERE order_id=$1';
+      await db_connection.query(deleteProductsFromOrderSql, [id]);
+      const deleteOrderSql = 'DELETE FROM orders WHERE id = $1';
+      await db_connection.query(deleteOrderSql, [id]);
       db_connection.release();
       return orderMessages.deletedWithSuccess;
     } catch (error) {
