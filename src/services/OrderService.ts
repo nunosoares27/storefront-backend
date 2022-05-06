@@ -46,17 +46,6 @@ class OrderService {
     }
   };
 
-  // getCurrentOrderById = async (req: Request, res: Response) => {
-  //   try {
-  //     const order = await store.getCurrentById(parseInt(req.params.id));
-  //     if (!order) res.status(200).send({ message: orderMessages.theresNoOrderWithId(req.params.id) });
-  //     res.status(200).send(order);
-  //   } catch (error) {
-  //     res.statusMessage = error;
-  //     res.status(400).end();
-  //   }
-  // };
-
   createOrder = async (req: Request, res: Response) => {
     try {
       const newOrder = await store.create({ user_id: req.body.user_id, status: req.body.status });
