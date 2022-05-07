@@ -19,8 +19,8 @@ export class Store {
       const users = await db_connection.query(sql);
       db_connection.release();
       return users.rows;
-    } catch (error) {
-      throw new Error(userMessages.getusersFail(error));
+    } catch (error: unknown) {
+      throw new Error(userMessages.getusersFail(error as unknown as string));
     }
   }
 
@@ -31,8 +31,8 @@ export class Store {
       const user = await db_connection.query(sql, [id]);
       db_connection.release();
       return user.rows[0];
-    } catch (error) {
-      throw new Error(userMessages.getUserFail(error));
+    } catch (error: unknown) {
+      throw new Error(userMessages.getUserFail(error as unknown as string));
     }
   }
 
@@ -54,8 +54,8 @@ export class Store {
           }
         }
         throw new Error(userMessages.loginFail);
-      } catch (error) {
-        throw new Error(userMessages.loginFailWithError(error));
+      } catch (error: unknown) {
+        throw new Error(userMessages.loginFailWithError(error as unknown as string));
       }
     }
   }
@@ -74,8 +74,8 @@ export class Store {
         db_connection.release();
         const token = jwt.sign({ user: registeredUser }, token_secret);
         return res.json(token) as unknown as string;
-      } catch (error) {
-        throw new Error(userMessages.registerUserFail(error));
+      } catch (error: unknown) {
+        throw new Error(userMessages.registerUserFail(error as unknown as string));
       }
     }
   }
@@ -104,8 +104,8 @@ export class Store {
       await db_connection.query(sql);
       db_connection.release();
       return userMessages.editWithSuccess;
-    } catch (error) {
-      throw new Error(userMessages.editUserFail(error));
+    } catch (error: unknown) {
+      throw new Error(userMessages.editUserFail(error as unknown as string));
     }
   }
 
@@ -116,8 +116,8 @@ export class Store {
       await db_connection.query(sql, [id]);
       db_connection.release();
       return userMessages.deletedWithSuccess;
-    } catch (error) {
-      throw new Error(userMessages.deleteUserFail(error));
+    } catch (error: unknown) {
+      throw new Error(userMessages.deleteUserFail(error as unknown as string));
     }
   }
 }

@@ -9,8 +9,8 @@ class CategoryService {
     try {
       const categories = await store.index();
       res.status(200).send(categories);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -20,8 +20,8 @@ class CategoryService {
       const category = await store.getById(parseInt(req.params.id));
       if (!category) res.status(200).send({ message: categoryMessages.theresNoCategoryWithId(req.params.id) });
       res.status(200).send(category);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -30,8 +30,8 @@ class CategoryService {
     try {
       const newCategory = await store.create(req.body.name);
       res.status(201).send(newCategory);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -49,8 +49,8 @@ class CategoryService {
     try {
       await store.delete({ id: parseInt(req.params.id) });
       res.status(200).send({ message: categoryMessages.deletedWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };

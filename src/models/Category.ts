@@ -10,8 +10,8 @@ export class Store {
       const categories = await db_connection.query(sql);
       db_connection.release();
       return categories.rows;
-    } catch (error) {
-      throw new Error(categoryMessages.getCategoriesFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.getCategoriesFail(error as unknown as string));
     }
   }
 
@@ -22,8 +22,8 @@ export class Store {
       const category = await db_connection.query(sql, [id]);
       db_connection.release();
       return category.rows[0];
-    } catch (error) {
-      throw new Error(categoryMessages.getCategoryFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.getCategoryFail(error as unknown as string));
     }
   }
 
@@ -34,8 +34,8 @@ export class Store {
       const newCategory = await db_connection.query(sql, [name]);
       db_connection.release();
       return newCategory.rows[0];
-    } catch (error) {
-      throw new Error(categoryMessages.createCategoryFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.createCategoryFail(error as unknown as string));
     }
   }
 
@@ -46,8 +46,8 @@ export class Store {
       await db_connection.query(sql, [name, id]);
       db_connection.release();
       return categoryMessages.editWithSuccess;
-    } catch (error) {
-      throw new Error(categoryMessages.editCategoryFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.editCategoryFail(error as unknown as string));
     }
   }
 
@@ -58,8 +58,8 @@ export class Store {
       await db_connection.query(sql, [id]);
       db_connection.release();
       return categoryMessages.deletedWithSuccess;
-    } catch (error) {
-      throw new Error(categoryMessages.deleteCategoryFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.deleteCategoryFail(error as unknown as string));
     }
   }
 }

@@ -1,6 +1,6 @@
 # Storefront Backend Project
 
-- In this project, it was developed a storefront backend, using node js, typescript, postgres.
+- In this project I developed a storefront backend, using node js, typescript, postgres, jwt.
 
 ## Project Instructions 
 

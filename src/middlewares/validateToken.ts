@@ -11,8 +11,8 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
     const token = req.headers.authorization?.split(' ')[1] as string;
     jwt.verify(token, token_secret);
     next();
-  } catch (error) {
-    res.statusMessage = userMessages.invalidToken;
+  } catch (error: unknown) {
+    res.statusMessage = userMessages.invalidToken as unknown as string;
     res.status(401).end();
   }
 };

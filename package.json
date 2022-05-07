@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/index.js",
     "start:dev": "tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess \"node ./dist/index.js\"",
-    "test": "ENV=test && db-migrate --env test reset && db-migrate --env test up && jasmine-ts && db-migrate --env test reset",
+    "test": "ENV=test && db-migrate db:drop storefront_testing && db-migrate db:create storefront_testing && db-migrate --env test up && jasmine-ts && db-migrate db:drop storefront_testing",
     "tsc": "tsc",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write"
   },

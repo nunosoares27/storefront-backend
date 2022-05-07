@@ -19,8 +19,8 @@ export class Store {
       const orders = await db_connection.query(sql);
       db_connection.release();
       return orders.rows;
-    } catch (error) {
-      throw new Error(orderMessages.getOrdersFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.getOrdersFail(error as unknown as string));
     }
   }
 
@@ -39,8 +39,8 @@ export class Store {
       const orders = await db_connection.query(sql, [id]);
       db_connection.release();
       return orders.rows;
-    } catch (error) {
-      throw new Error(orderMessages.getOrdersFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.getOrdersFail(error as unknown as string));
     }
   }
 
@@ -59,8 +59,8 @@ export class Store {
       const orders = await db_connection.query(sql, [id]);
       db_connection.release();
       return orders.rows;
-    } catch (error) {
-      throw new Error(orderMessages.getOrdersFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.getOrdersFail(error as unknown as string));
     }
   }
 
@@ -79,8 +79,8 @@ export class Store {
       const order = await db_connection.query(sql, [id]);
       db_connection.release();
       return order.rows;
-    } catch (error) {
-      throw new Error(orderMessages.getOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.getOrderFail(error as unknown as string));
     }
   }
 
@@ -91,8 +91,8 @@ export class Store {
       const newOrder = await db_connection.query(sql, [user_id, status]);
       db_connection.release();
       return newOrder.rows[0];
-    } catch (error) {
-      throw new Error(orderMessages.createOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.createOrderFail(error as unknown as string));
     }
   }
 
@@ -120,8 +120,8 @@ export class Store {
       await db_connection.query(sql);
       db_connection.release();
       return orderMessages.editWithSuccess;
-    } catch (error) {
-      throw new Error(orderMessages.editOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.editOrderFail(error as unknown as string));
     }
   }
 
@@ -137,8 +137,8 @@ export class Store {
       await db_connection.query(deleteOrderSql, [id]);
       db_connection.release();
       return orderMessages.deletedWithSuccess;
-    } catch (error) {
-      throw new Error(orderMessages.deleteOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.deleteOrderFail(error as unknown as string));
     }
   }
 
@@ -149,8 +149,8 @@ export class Store {
       const newProduct = await db_connection.query(sql, [id, product_id, quantity]);
       db_connection.release();
       return newProduct.rows[0];
-    } catch (error) {
-      throw new Error(orderMessages.createOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.createOrderFail(error as unknown as string));
     }
   }
 
@@ -161,8 +161,8 @@ export class Store {
       const editProduct = await db_connection.query(sql, [id, product_id, quantity]);
       db_connection.release();
       return editProduct.rows[0];
-    } catch (error) {
-      throw new Error(orderMessages.editOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.editOrderFail(error as unknown as string));
     }
   }
 
@@ -173,8 +173,8 @@ export class Store {
       await db_connection.query(sql, [id, product_id]);
       db_connection.release();
       return orderMessages.deletedProductFromOrder;
-    } catch (error) {
-      throw new Error(orderMessages.deleteProductOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.deleteProductOrderFail(error as unknown as string));
     }
   }
 }
