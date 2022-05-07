@@ -33,7 +33,7 @@ TODO
 - id SERIAL PRIMARY KEY,
 - name VARCHAR(100)
 
-## users (
+## users
 - id SERIAL PRIMARY KEY,
 - firstName VARCHAR(80) NOT NULL,
 - lastName VARCHAR(80) NOT NULL,
