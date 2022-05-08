@@ -679,3 +679,33 @@ Example response:
 	"message": "Order deleted with success"
 }
 ```
+
+### Unity tests
+
+  Category tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Category
+      ✓ Index method should return array of Categories with Category test on it
+      ✓ getById method should return category with ID
+      ✓ Update method should return a message "Category edited with success"
+      ✓ Delete method should return a message "Category deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Index should return array of categories
+      ✓ Test getById should return category with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no category by id 3" when a invalid id is provided
+      ✓ Test Create should return created Category and status 201
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test edit category should return a message "Category edited with success"
+      ✓ Test edit category should return status 401 when no userToken is provided
+      ✓ Test delete category should return a message "Category deleted with success"
+      ✓ Test delete category should return status 401 when no userToken is provided

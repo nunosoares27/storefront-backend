@@ -5,8 +5,9 @@ import client from '../database';
 
 const categoryStore = new CategoryStore();
 const request = supertest(server);
+let userToken = '';
 
-describe('Category Store', () => {
+describe('Category tests', () => {
   beforeAll(async () => {
     const conn = await client.connect();
     const removeOrderProductsSql = 'DELETE FROM orders_products; ALTER SEQUENCE orders_products_id_seq RESTART WITH 1;\n';
@@ -79,6 +80,110 @@ describe('Category Store', () => {
     it('Delete method should return a message "Category deleted with success"', async () => {
       const result = await categoryStore.delete(1 as unknown as { id: number });
       expect(result).toEqual('Category deleted with success');
+    });
+  });
+
+  describe('Test API Endpoints', () => {
+    beforeAll(async () => {
+      'Register user and get token. We need this to access the protected routes';
+      const response = await request.post('/users/register').set('Content-type', 'application/json').send({
+        firstName: 'Nuno',
+        lastName: 'Soares',
+        password: 'test123',
+      });
+      expect(response.status).toBe(200);
+
+      userToken = response.body;
+    });
+
+    it('Check if server runs, should return 200 status', async () => {
+      const response = await request.get('/categories');
+      expect(response.status).toBe(200);
+    });
+
+    it('Test Index should return array of categories', async () => {
+      const response = await request.get('/categories');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([
+        jasmine.objectContaining({
+          name: 'Category test edited',
+        }),
+      ]);
+    });
+
+    it('Test getById should return category with id when a valid id is provided', async () => {
+      const response = await request.get('/categories/1');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(
+        jasmine.objectContaining({
+          name: 'Category test edited',
+        }),
+      );
+    });
+
+    it('Test getById should return the message "Theres no category by id 3" when a invalid id is provided', async () => {
+      const response = await request.get('/categories/3');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(
+        jasmine.objectContaining({
+          message: 'Theres no category by id 3',
+        }),
+      );
+    });
+
+    it('Test Create should return created Category and status 201', async () => {
+      const response = await request
+        .post('/categories')
+        .set('Authorization', 'Bearer ' + userToken)
+        .send({
+          name: 'Category Endpoint test',
+        });
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual(
+        jasmine.objectContaining({
+          name: 'Category Endpoint test',
+        }),
+      );
+    });
+
+    it('Test Create should return status 401 when no userToken is provided', async () => {
+      const response = await request.post('/categories').send({
+        name: 'Category Endpoint test 2',
+      });
+      expect(response.status).toBe(401);
+    });
+
+    it('Test edit category should return a message "Category edited with success"', async () => {
+      const response = await request
+        .put('/categories/2')
+        .set('Authorization', 'Bearer ' + userToken)
+        .send({ name: 'Category Endpoint test edited' });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(
+        jasmine.objectContaining({
+          message: 'Category edited with success',
+        }),
+      );
+    });
+
+    it('Test edit category should return status 401 when no userToken is provided', async () => {
+      const response = await request.put('/categories/2').send({ name: 'Category Endpoint test edited' });
+      expect(response.status).toBe(401);
+    });
+
+    it('Test delete category should return a message "Category deleted with success"', async () => {
+      const response = await request.delete('/categories/2').set('Authorization', 'Bearer ' + userToken);
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(
+        jasmine.objectContaining({
+          message: 'Category deleted with success',
+        }),
+      );
+    });
+
+    it('Test delete category should return status 401 when no userToken is provided', async () => {
+      const response = await request.delete('/categories/2');
+      expect(response.status).toBe(401);
     });
   });
 });
