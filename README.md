@@ -682,9 +682,9 @@ Example response:
 
 ### Unity tests
 
-  Category tests
+Category tests
 
-    Test methods exist
+	Test methods exist
       ✓ Index method should exist
       ✓ getById method should exist
       ✓ Create method should exist
@@ -709,3 +709,35 @@ Example response:
       ✓ Test edit category should return status 401 when no userToken is provided
       ✓ Test delete category should return a message "Category deleted with success"
       ✓ Test delete category should return status 401 when no userToken is provided
+
+User tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ Register method should exist
+      ✓ Login method should exist
+      ✓ Edit method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Index method should return array of Users
+      ✓ Register method should return a token
+      ✓ Login method should return a token
+      ✓ getById method should return user with ID
+      ✓ Edit method should return a message "User edited with success"
+      ✓ Delete method should return a message "User deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Index should return array of users
+      ✓ Test Index should return 401 when no userToken is provided
+      ✓ Test getById should return user with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no user by id 4" when a invalid id is provided
+      ✓ Test getById should return 401 when no userToken is provided
+      ✓ Test Register should return token and status 200
+      ✓ Test Login should return token and status 200
+      ✓ Test update user should return a message "User edited with success"
+      ✓ Test update user should return status 401 when no userToken is provided
+      ✓ Test delete user should return a message "User deleted with success"
+      ✓ Test delete user should return status 401 when no userToken is provided
