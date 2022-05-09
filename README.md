@@ -10,10 +10,10 @@
 - `npm install` to install all dependencies.
 - run `docker-compose up` to create the docker container. Wait until you see a message like `postgres_1  | 2022-05-09 09:06:55.209 UTC [1] LOG:  database system is ready to accept connections`. Open another terminal tab in the same folder and follow the other instructions. To exit just do Ctrl+c.
 - For being able to run the commands bellow, it's required to have the container (storefront-backend) running.
-- `npm run db-up` to set up the database.
+- `npm run db-up` to set up the database and access `http://127.0.0.1:5433`.
 
-To start dev environment run `npm run start:dev` and use postman or similar tool to test the api.
-To start a production server, build the project with `npm run build` and then `npm run start`.
+To start dev environment run `npm run start:dev` and access `http://127.0.0.1:3000`.Use postman or similar tool to test the api.
+To start a production server, build the project with `npm run build` and then `npm run start`. Access `http://127.0.0.1:3000`.
 To test, run `npm run test`
 
 ## DB TABLES
