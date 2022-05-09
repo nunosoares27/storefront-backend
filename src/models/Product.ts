@@ -12,8 +12,8 @@ export class Store {
       const products = await db_connection.query(sql);
       db_connection.release();
       return products.rows;
-    } catch (error) {
-      throw new Error(productMessages.getProductsFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.getProductsFail(error as unknown as string));
     }
   }
 
@@ -24,8 +24,8 @@ export class Store {
       const products = await db_connection.query(sql, [id]);
       db_connection.release();
       return products.rows;
-    } catch (error) {
-      throw new Error(productMessages.getProductsFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.getProductsFail(error as unknown as string));
     }
   }
 
@@ -38,8 +38,8 @@ export class Store {
       const product = await db_connection.query(sql, [id]);
       db_connection.release();
       return product.rows[0];
-    } catch (error) {
-      throw new Error(productMessages.getProductFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.getProductFail(error as unknown as string));
     }
   }
 
@@ -50,8 +50,8 @@ export class Store {
       const newProduct = await db_connection.query(sql, [name, price, category_id]);
       db_connection.release();
       return newProduct.rows[0];
-    } catch (error) {
-      throw new Error(productMessages.createProductFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.createProductFail(error as unknown as string));
     }
   }
 
@@ -79,8 +79,8 @@ export class Store {
       await db_connection.query(sql);
       db_connection.release();
       return productMessages.editWithSuccess;
-    } catch (error) {
-      throw new Error(productMessages.editProductFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.editProductFail(error as unknown as string));
     }
   }
 
@@ -91,8 +91,8 @@ export class Store {
       await db_connection.query(sql, [id]);
       db_connection.release();
       return productMessages.deletedWithSuccess;
-    } catch (error) {
-      throw new Error(productMessages.deleteProductFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.deleteProductFail(error as unknown as string));
     }
   }
 }

@@ -1,54 +1,811 @@
 # Storefront Backend Project
 
-## Getting Started
+- In this project I developed a storefront backend, using node js, typescript, postgres, jwt.
+- Crud of users, orders, products, categories. Added authentication.
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+## Project Instructions 
+- Make sure you have installed Docker and Docker Compose
+- rename file .env-example to .env.
+- run `docker-compose up` to start the docker container
+- `npm install` to install all dependencies
+- `npm run db-up` to set up the database
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+To start dev enviroment run `npm run start:dev` and use postman or similar tool to test the api.
+To start a production server, build the project with `npm run build` and then `npm run start`.
+To test, run `npm run test`
 
-## Steps to Completion
+## DB TABLES
 
-### 1. Plan to Meet Requirements
+## orders_products 
+- id SERIAL PRIMARY KEY,
+- order_id bigint REFERENCES orders(id),
+- product_id bigInt REFERENCES products(id),
+- quantity integer
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+## orders
+- id SERIAL PRIMARY KEY,
+- user_id bigInt REFERENCES users(id),
+- status BOOLEAN
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+## products 
+- id SERIAL PRIMARY KEY,
+- price INTEGER NOT NULL,
+- name VARCHAR(120) NOT NULL,
+- category_id bigInt REFERENCES categories(id)
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+## categories
+- id SERIAL PRIMARY KEY,
+- name VARCHAR(100)
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+## users
+- id SERIAL PRIMARY KEY,
+- firstName VARCHAR(80) NOT NULL,
+- lastName VARCHAR(80) NOT NULL,
+- password VARCHAR(100) NOT NULL
 
-### 2.  DB Creation and Migrations
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+# Endpoints
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+## Users
 
-### 3. Models
+### Register **(No Authentication required)**
+POST
+```localhost:3000/users/register```
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+Example payload:
 
-### 4. Express Handlers
+```
+{
+	"firstName" : "Nuno",
+	"lastName" : "Soares",
+	"password" : "123456"
+}
+```
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+Example response:
 
-### 5. JWTs
+```
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxNCwiZmlyc3RuYW1lIjoiTWlndWVsIiwibGFzdG5hbWUiOiJTYW50b3MiLCJwYXNzd29yZCI6IiQyYiQxMCR0Y1B6RnVmcFhLY2tvT1ZRVTM4YWZ1Vk4waVBLUGZOQXkySjZ4R1k0eVRkR0NNWVBnYTFUaSJ9LCJpYXQiOjE2NTE1MjIyMjZ9.0YDxI2K74O-k50SDeLYp1Kso2v-6IzQfg49KJjDDNG0"
+```
+Then save this token without the " ", to use on protected routes **=)**.
+example of usage ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....```
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
 
-### 6. QA and `README.md`
+### Login **(No Authentication required)**
+POST
+```localhost:3000/users/login```
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+Example payload:
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+```
+{
+	"firstName" : "Nuno",
+	"lastName" : "Soares",
+	"password" : "123456"
+}
+```
+
+Example response:
+
+```
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxNCwiZmlyc3RuYW1lIjoiTWlndWVsIiwibGFzdG5hbWUiOiJTYW50b3MiLCJwYXNzd29yZCI6IiQyYiQxMCR0Y1B6RnVmcFhLY2tvT1ZRVTM4YWZ1Vk4waVBLUGZOQXkySjZ4R1k0eVRkR0NNWVBnYTFUaSJ9LCJpYXQiOjE2NTE1MjIyMjZ9.0YDxI2K74O-k50SDeLYp1Kso2v-6IzQfg49KJjDDNG0"
+```
+Then save this token without the " ", to use on protected routes **=)**.
+example of usage ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....```
+
+### Get all users **(Authentication required)**
+GET
+```localhost:3000/users```
+
+For security reasons, the password doen't appear on the response.
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+[
+	{
+		"id": 12,
+		"firstname": "Nuno",
+		"lastname": "Soares"
+	},
+	{
+		"id": 14,
+		"firstname": "Miguel",
+		"lastname": "Santos"
+	}
+]
+```
+
+### Get user by id **(Authentication required)**
+GET
+```localhost:3000/users/:id```
+
+For security reasons, the password doen't appear on the response.
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+{
+	"firstname": "Nuno",
+	"lastname": "Soares"
+}
+```
+
+
+### Edit user **(Authentication required)**
+PUT
+```localhost:3000/users/:id```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below. You don't need to provide everything, you can only supply the params you want to change.
+
+Example payload:
+
+```
+{
+	"firstName": "Edited",
+	"lastName": "User"
+}
+```
+
+
+Example response:
+
+```
+{
+	"message": "User edited with success"
+}
+```
+
+### Delete user **(Authentication required)**
+DELETE
+```localhost:3000/users/:id```
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+{
+	"message": "User deleted with success"
+}
+```
+
+
+
+## Categories
+
+### Get all categories **(No Authentication required)**
+GET
+```localhost:3000/categories```
+
+Example response:
+
+```
+[
+	{
+		"id": 1,
+		"name": "React js ebooks"
+	},
+	{
+		"id": 2,
+		"name": "Express js ebooks"
+	}
+]
+```
+
+### Get category by id **(No Authentication required)**
+GET
+```localhost:3000/categories/:id```
+
+Example response:
+
+```
+{
+	"id": 1,
+	"name": "React js ebooks"
+}
+```
+
+### Create category **(Authentication required)**
+POST
+```localhost:3000/categories/```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below.
+
+Example payload:
+
+```
+{
+	"name": "Action Movies"
+}
+```
+
+Example response:
+
+```
+{
+	"id": 3,
+	"name": "Action Movies"
+}
+```
+
+### Update category **(Authentication required)**
+PUT
+```localhost:3000/categories/:id```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below.
+
+Example payload:
+
+```
+{
+	"name": "Action Movies Edited"
+}
+```
+
+Example response:
+
+```
+{
+	"message": "Category edited with success"
+}
+```
+
+### Delete category **(Authentication required)**
+DELETE
+```localhost:3000/categories/:id```
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+{
+	"message": "Category deleted with success"
+}
+```
+
+## Products
+
+
+### Get all products **(No Authentication required)**
+GET
+```localhost:3000/products```
+
+Example response:
+
+```
+[
+	{
+		"id": 3,
+		"price": 60,
+		"name": "Learn Node js",
+		"category_id": 3,
+		"category_name": "React js ebooks"
+	},
+	{
+		"id": 5,
+		"price": 20,
+		"name": "Learn React js",
+		"category_id": 3,
+		"category_name": "React js ebooks"
+	},
+	{
+		"id": 7,
+		"price": 30,
+		"name": "Learn Redux js",
+		"category_id": 3,
+		"category_name": "React js ebooks"
+	},
+	{
+		"id": 8,
+		"price": 500,
+		"name": "Learn Math and Physics",
+		"category_id": null,
+		"category_name": null
+	}
+]
+```
+
+### Get product by id **(No Authentication required)**
+GET
+```localhost:3000/products/:id```
+
+Example response:
+
+```
+{
+	"id": 8,
+	"price": 500,
+	"name": "Learn Math and Physics",
+	"category_id": null,
+	"category_name": null
+}
+```
+
+### Create product **(Authentication required)**
+POST
+```localhost:3000/products/```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below.
+
+Example payload:
+
+```
+{
+	"name": "Learn Redux js",
+	"price": 30,
+	"category_id": 3
+}
+```
+
+Example response:
+
+```
+{
+	"id": 10,
+	"price": 30,
+	"name": "Learn Redux js",
+	"category_id": "3"
+}
+```
+
+### Update product **(Authentication required)**
+PUT
+```localhost:3000/products/:id```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below. You don't need to provide everything, you can only supply the params you want to change.
+
+Example payload:
+
+```
+{
+	"price": 500,
+	"name": "Learn Math and Physics",
+	"category_id": null
+}
+```
+
+Example response:
+
+```
+{
+	"message": "Product edited with success"
+}
+```
+
+### Delete product **(Authentication required)**
+DELETE
+```localhost:3000/products/:id```
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+{
+	"message": "Product deleted with success"
+}
+```
+
+### Get products by category **(No Authentication required)**
+GET
+```localhost:3000/products/category/:id```
+
+Example response:
+
+```
+[
+	{
+		"id": 3,
+		"price": 60,
+		"name": "Learn Node js",
+		"category_id": "3"
+	},
+	{
+		"id": 5,
+		"price": 20,
+		"name": "Learn React js",
+		"category_id": "3"
+	},
+	{
+		"id": 7,
+		"price": 30,
+		"name": "Learn Redux js",
+		"category_id": "3"
+	}
+]
+
+```
+
+## Orders
+
+
+### Get all orders **(Authentication required)**
+GET
+```localhost:3000/orders```
+
+You need to provide a header authentication with ```Bearer :tokenid```
+
+Example response:
+
+```
+[
+	{
+		"order_id": 7,
+		"user_id": 12,
+		"firstname": "Nuno",
+		"lastname": "Soares",
+		"products": [
+			{
+				"name": "Learn Math and Physics",
+				"price": 500,
+				"quantity": 2,
+				"product_id": 8,
+				"category_id": null,
+				"category_name": null
+			}
+		],
+		"complete": true
+	},
+	{
+		"order_id": 9,
+		"user_id": 14,
+		"firstname": "Miguel",
+		"lastname": "Santos",
+		"products": [],
+		"complete": false
+	},
+]
+```
+
+
+### Get all current orders by user **(Authentication required)**
+GET
+```localhost:3000/orders/current/:user_id```
+
+You need to provide a header authentication with ```Bearer :tokenid```
+
+Example response:
+
+```
+[
+	{
+		"order_id": 7,
+		"user_id": 12,
+		"firstname": "Nuno",
+		"lastname": "Soares",
+		"products": [
+			{
+				"name": "Learn Math and Physics",
+				"price": 500,
+				"quantity": 2,
+				"product_id": 8,
+				"category_id": null,
+				"category_name": null
+			}
+		],
+		"complete": false
+	},
+]
+```
+
+### Get all completed orders by user **(Authentication required)**
+GET
+```localhost:3000/orders/completed/:user_id```
+
+You need to provide a header authentication with ```Bearer :tokenid```
+
+Example response:
+
+```
+[
+	{
+		"order_id": 7,
+		"user_id": 12,
+		"firstname": "Nuno",
+		"lastname": "Soares",
+		"products": [
+			{
+				"name": "Learn Math and Physics",
+				"price": 500,
+				"quantity": 2,
+				"product_id": 8,
+				"category_id": null,
+				"category_name": null
+			}
+		],
+		"complete": true
+	},
+]
+```
+
+### Get orders by id **(Authentication required)**
+GET
+```localhost:3000/orders/:id```
+
+You need to provide a header authentication with ```Bearer :tokenid```
+
+Example response:
+
+```
+[
+	{
+		"order_id": 7,
+		"user_id": 12,
+		"firstname": "Nuno",
+		"lastname": "Soares",
+		"products": [
+			{
+				"name": "Learn Math and Physics",
+				"price": 500,
+				"quantity": 2,
+				"product_id": 8,
+				"category_id": null,
+				"category_name": null
+			}
+		],
+		"complete": true
+	},
+]
+```
+
+### Create order **(Authentication required)**
+POST
+```localhost:3000/orders```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below.
+
+Example payload:
+
+```
+{
+	"user_id": "14",
+	"status": false
+}
+```
+
+Example response:
+
+```
+{
+	"id": 12,
+	"user_id": "14",
+	"status": false
+}
+```
+
+### Update order **(Authentication required)**
+PUT
+```localhost:3000/orders/:id```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below. You don't need to provide everything, you can only supply the params you want to change.
+
+Example payload:
+
+```
+{
+	"user_id": "12",
+	"status": true
+}
+```
+
+Example response:
+
+```
+{
+	"message": "Order edited with success"
+}
+```
+
+### Delete order **(Authentication required)**
+DELETE
+```localhost:3000/orders/:id```
+
+You need to provide a header with ```Bearer :tokenid```
+
+Example response:
+
+```
+{
+	"message": "Order deleted with success"
+}
+```
+
+
+### Add product to order **(Authentication required)**
+POST
+```localhost:3000/orders/:order_id/product```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below.
+
+Example payload:
+
+```
+{
+	"product_id": 8,
+	"quantity": 2
+}
+```
+
+Example response:
+
+```
+{
+	"id": 26,
+	"order_id": "7",
+	"product_id": "8",
+	"quantity": 2
+}
+```
+
+
+### Update product order **(Authentication required)**
+PUT
+```localhost:3000/orders/:order_id/product```
+
+You need to provide a header with ```Bearer :tokenid```, and provide a payload like below. You don't need to provide everything, you can only supply the params you want to change.
+
+Example payload:
+
+```
+{
+	"product_id": 8,
+	"quantity": 2
+}
+```
+
+Example response:
+
+```
+{
+	"message": "Order edited with success"
+}
+```
+
+### Delete product order **(Authentication required)**
+DELETE
+```localhost:3000/orders/:order_id/product/:product_id```
+
+You need to provide a header with ```Bearer :tokenid```.
+
+
+Example response:
+
+```
+{
+	"message": "Order deleted with success"
+}
+```
+
+### Unity tests
+
+Category tests
+
+	Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Category
+      ✓ Index method should return array of Categories with Category test on it
+      ✓ getById method should return category with ID
+      ✓ Update method should return a message "Category edited with success"
+      ✓ Delete method should return a message "Category deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Index should return array of categories
+      ✓ Test getById should return category with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no category by id 3" when a invalid id is provided
+      ✓ Test Create should return created Category and status 201
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test edit category should return a message "Category edited with success"
+      ✓ Test edit category should return status 401 when no userToken is provided
+      ✓ Test delete category should return a message "Category deleted with success"
+      ✓ Test delete category should return status 401 when no userToken is provided
+
+User tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ Register method should exist
+      ✓ Login method should exist
+      ✓ Edit method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Index method should return array of Users
+      ✓ Register method should return a token
+      ✓ Login method should return a token
+      ✓ getById method should return user with ID
+      ✓ Edit method should return a message "User edited with success"
+      ✓ Delete method should return a message "User deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Index should return array of users
+      ✓ Test Index should return 401 when no userToken is provided
+      ✓ Test getById should return user with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no user by id 4" when a invalid id is provided
+      ✓ Test getById should return 401 when no userToken is provided
+      ✓ Test Register should return token and status 200
+      ✓ Test Login should return token and status 200
+      ✓ Test update user should return a message "User edited with success"
+      ✓ Test update user should return status 401 when no userToken is provided
+      ✓ Test delete user should return a message "User deleted with success"
+      ✓ Test delete user should return status 401 when no userToken is provided
+
+Product tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ productsByCategory method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Product
+      ✓ Index method should return array of Products with Product 1 on it
+      ✓ getById method should return product with ID
+      ✓ Update method should return a message "Product edited with success"
+      ✓ Delete method should return a message "Product deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Create should return created Product and status 201
+      ✓ Test Index should return array of products
+      ✓ Test getById should return products with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no product by id 3" when a invalid id is provided
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test edit product should return a message "Product edited with success"
+      ✓ Test edit product should return status 401 when no userToken is provided
+      ✓ Test delete product should return a message "Product deleted with success"
+      ✓ Test delete products should return status 401 when no userToken is provided
+
+Order tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ IndexCompletedByUser method should exist
+      ✓ IndexCurrentByUser method should exist
+      ✓ getById method should exist
+      ✓ addProduct method should exist
+      ✓ editProduct method should exist
+      ✓ deleteProduct method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Order
+      ✓ Index method should return array of Orders
+      ✓ IndexCurrentByUser method should return array of Orders
+      ✓ getById method should return order with ID
+      ✓ Update method should return a message "Order edited with success"
+      ✓ IndexCompletedByUser method should return array of Orders
+      ✓ Delete method should return a message "Order deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Create should return created Order and status 201
+      ✓ Test Index should return array of orders
+      ✓ Test getById should return orders with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no order by id 3" when a invalid id is provided
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test add product to order
+      ✓ Test remove product from order
+      ✓ Test edit order should return a message "Order edited with success"
+      ✓ Test edit order should return status 401 when no userToken is provided
+      ✓ Test delete order should return a message "Order deleted with success"
+      ✓ Test delete order should return status 401 when no userToken is provided

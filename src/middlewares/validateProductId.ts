@@ -14,8 +14,8 @@ export default async function validateProductId(req: Request, res: Response, nex
           .status(200)
           .send({ message: productMessages.theresNoProductWithId(req.body.product_id ? req.body.product_id : req.params.product_id) });
       next();
-    } catch (error) {
-      throw new Error(productMessages.getProductFail(error));
+    } catch (error: unknown) {
+      throw new Error(productMessages.getProductFail(error as unknown as string));
     }
   }
   if (!req.body.product_id && !req.params.product_id) next();

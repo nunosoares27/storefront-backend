@@ -11,8 +11,8 @@ export default async function validateOrderId(req: Request, res: Response, next:
       db_connection.release();
       if (!order.rows[0]) return res.status(200).send({ message: orderMessages.theresNoOrderWithId(req.params.id) });
       next();
-    } catch (error) {
-      throw new Error(orderMessages.getOrderFail(error));
+    } catch (error: unknown) {
+      throw new Error(orderMessages.getOrderFail(error as unknown as string));
     }
   }
   if (!req.params.id) next();

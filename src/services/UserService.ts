@@ -9,8 +9,8 @@ class UserService {
     try {
       const users = await store.index();
       res.status(200).send(users);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -20,8 +20,8 @@ class UserService {
       const user = await store.getById(parseInt(req.params.id));
       if (!user) res.status(200).send({ message: userMessages.theresNoUserWithId(req.params.id) });
       res.status(200).send(user);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -30,8 +30,8 @@ class UserService {
     try {
       await store.edit(req);
       res.status(200).send({ message: userMessages.editWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -40,8 +40,8 @@ class UserService {
     try {
       const user = await store.login(res, req.body);
       res.status(200).send(user);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -54,8 +54,8 @@ class UserService {
       } else {
         res.status(400).send(userMessages.registerUserFailGeneric);
       }
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -64,8 +64,8 @@ class UserService {
     try {
       await store.delete({ id: parseInt(req.params.id) });
       res.status(200).send({ message: userMessages.deletedWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };

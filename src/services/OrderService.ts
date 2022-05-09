@@ -9,8 +9,8 @@ class OrderService {
     try {
       const orders = await store.index();
       res.status(200).send(orders);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -19,8 +19,8 @@ class OrderService {
     try {
       const orders = await store.indexCurrentByUser(parseInt(req.params.id));
       res.status(200).send(orders);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -29,8 +29,8 @@ class OrderService {
     try {
       const orders = await store.indexCompletedByUser(parseInt(req.params.id));
       res.status(200).send(orders);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -40,8 +40,8 @@ class OrderService {
       const order = await store.getById(parseInt(req.params.id));
       if (!order) res.status(200).send({ message: orderMessages.theresNoOrderWithId(req.params.id) });
       res.status(200).send(order);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -50,8 +50,8 @@ class OrderService {
     try {
       const newOrder = await store.create({ user_id: req.body.user_id, status: req.body.status });
       res.status(201).send(newOrder);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -60,8 +60,8 @@ class OrderService {
     try {
       await store.update(req);
       res.status(200).send({ message: orderMessages.editWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -70,8 +70,8 @@ class OrderService {
     try {
       await store.delete({ id: parseInt(req.params.id) });
       res.status(200).send({ message: orderMessages.deletedWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -80,8 +80,8 @@ class OrderService {
     try {
       const newProduct = await store.addProduct({ id: parseInt(req.params.id), product_id: req.body.product_id, quantity: req.body.quantity });
       res.status(201).send(newProduct);
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -90,8 +90,8 @@ class OrderService {
     try {
       await store.editProduct({ id: parseInt(req.params.id), product_id: req.body.product_id, quantity: req.body.quantity });
       res.status(200).send({ message: orderMessages.editWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };
@@ -100,8 +100,8 @@ class OrderService {
     try {
       await store.deleteProduct({ id: parseInt(req.params.id), product_id: parseInt(req.params.product_id) });
       res.status(200).send({ message: orderMessages.deletedWithSuccess });
-    } catch (error) {
-      res.statusMessage = error;
+    } catch (error: unknown) {
+      res.statusMessage = error as unknown as string;
       res.status(400).end();
     }
   };

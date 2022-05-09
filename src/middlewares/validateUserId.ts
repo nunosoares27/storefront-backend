@@ -11,8 +11,8 @@ export default async function validateUserId(req: Request, res: Response, next: 
       db_connection.release();
       if (!user.rows[0]) return res.status(200).send({ message: userMessages.theresNoUserWithId(req.body.user_id) });
       next();
-    } catch (error) {
-      throw new Error(userMessages.getUserFail(error));
+    } catch (error: unknown) {
+      throw new Error(userMessages.getUserFail(error as unknown as string));
     }
   }
   if (!req.body.user_id) next();

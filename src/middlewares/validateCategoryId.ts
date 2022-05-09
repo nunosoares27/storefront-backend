@@ -11,8 +11,8 @@ export default async function validateCategoryId(req: Request, res: Response, ne
       db_connection.release();
       if (!category.rows[0]) return res.status(200).send({ message: categoryMessages.theresNoCategoryWithId(req.params.id) });
       next();
-    } catch (error) {
-      throw new Error(categoryMessages.getCategoryFail(error));
+    } catch (error: unknown) {
+      throw new Error(categoryMessages.getCategoryFail(error as unknown as string));
     }
   }
   if (!req.params.id) next();
