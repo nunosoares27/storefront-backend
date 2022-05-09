@@ -768,3 +768,40 @@ Product tests
       ✓ Test edit product should return status 401 when no userToken is provided
       ✓ Test delete product should return a message "Product deleted with success"
       ✓ Test delete products should return status 401 when no userToken is provided
+
+Order tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ IndexCompletedByUser method should exist
+      ✓ IndexCurrentByUser method should exist
+      ✓ getById method should exist
+      ✓ addProduct method should exist
+      ✓ editProduct method should exist
+      ✓ deleteProduct method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Order
+      ✓ Index method should return array of Orders
+      ✓ IndexCurrentByUser method should return array of Orders
+      ✓ getById method should return order with ID
+      ✓ Update method should return a message "Order edited with success"
+      ✓ IndexCompletedByUser method should return array of Orders
+      ✓ Delete method should return a message "Order deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Create should return created Order and status 201
+      ✓ Test Index should return array of orders
+      ✓ Test getById should return orders with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no order by id 3" when a invalid id is provided
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test add product to order
+      ✓ Test remove product from order
+      ✓ Test edit order should return a message "Order edited with success"
+      ✓ Test edit order should return status 401 when no userToken is provided
+      ✓ Test delete order should return a message "Order deleted with success"
+      ✓ Test delete order should return status 401 when no userToken is provided
