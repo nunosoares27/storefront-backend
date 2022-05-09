@@ -1,14 +1,18 @@
 # Storefront Backend Project
 
 - In this project I developed a storefront backend, using node js, typescript, postgres, jwt.
+- Crud of users, orders, products, categories. Added authentication.
 
 ## Project Instructions 
+- Make sure you have installed Docker and Docker Compose
+- rename file .env-example to .env.
+- run `docker-compose up` to start the docker container
+- `npm install` to install all dependencies
+- `npm run db-up` to set up the database
 
-1. Todo
-
-## ENVIRONMENT VARIABLES:
-
-TODO
+To start dev enviroment run `npm run start:dev` and use postman or similar tool to test the api.
+To start a production server, build the project with `npm run build` and then `npm run start`.
+To test, run `npm run test`
 
 ## DB TABLES
 

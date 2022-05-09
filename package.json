@@ -4,10 +4,13 @@
   "description": "Build a Storefront backend for the Udacity Fullstack javascript nanodegree. I used the base template provided by Udacity and made a few modifications.",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
+    "start": "node ./dist/index.js",
     "start:dev": "tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess \"node ./dist/index.js\"",
     "test": "ENV=test && db-migrate db:drop storefront_testing && db-migrate db:create storefront_testing && db-migrate --env test up && jasmine-ts && db-migrate db:drop storefront_testing",
     "tsc": "tsc",
+    "build": "tsc --esModuleInterop src/server.ts --outDir ./dist",
+    "db-up": "db-migrate up",
+    "db-down": "db-migrate down",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write"
   },
   "author": "Udacity",
