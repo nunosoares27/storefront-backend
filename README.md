@@ -62,7 +62,6 @@ Example response:
 
 ```
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxNCwiZmlyc3RuYW1lIjoiTWlndWVsIiwibGFzdG5hbWUiOiJTYW50b3MiLCJwYXNzd29yZCI6IiQyYiQxMCR0Y1B6RnVmcFhLY2tvT1ZRVTM4YWZ1Vk4waVBLUGZOQXkySjZ4R1k0eVRkR0NNWVBnYTFUaSJ9LCJpYXQiOjE2NTE1MjIyMjZ9.0YDxI2K74O-k50SDeLYp1Kso2v-6IzQfg49KJjDDNG0"
-
 ```
 Then save this token without the " ", to use on protected routes **=)**.
 example of usage ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....```
@@ -86,7 +85,6 @@ Example response:
 
 ```
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxNCwiZmlyc3RuYW1lIjoiTWlndWVsIiwibGFzdG5hbWUiOiJTYW50b3MiLCJwYXNzd29yZCI6IiQyYiQxMCR0Y1B6RnVmcFhLY2tvT1ZRVTM4YWZ1Vk4waVBLUGZOQXkySjZ4R1k0eVRkR0NNWVBnYTFUaSJ9LCJpYXQiOjE2NTE1MjIyMjZ9.0YDxI2K74O-k50SDeLYp1Kso2v-6IzQfg49KJjDDNG0"
-
 ```
 Then save this token without the " ", to use on protected routes **=)**.
 example of usage ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....```
@@ -741,3 +739,32 @@ User tests
       ✓ Test update user should return status 401 when no userToken is provided
       ✓ Test delete user should return a message "User deleted with success"
       ✓ Test delete user should return status 401 when no userToken is provided
+
+Product tests
+
+    Test methods exist
+      ✓ Index method should exist
+      ✓ getById method should exist
+      ✓ productsByCategory method should exist
+      ✓ Create method should exist
+      ✓ Update method should exist
+      ✓ Delete method should exist
+
+    Test methods return correct values
+      ✓ Create method should return a Product
+      ✓ Index method should return array of Products with Product 1 on it
+      ✓ getById method should return product with ID
+      ✓ Update method should return a message "Product edited with success"
+      ✓ Delete method should return a message "Product deleted with success"
+
+    Test API Endpoints
+      ✓ Check if server runs, should return 200 status
+      ✓ Test Create should return created Product and status 201
+      ✓ Test Index should return array of products
+      ✓ Test getById should return products with id when a valid id is provided
+      ✓ Test getById should return the message "Theres no product by id 3" when a invalid id is provided
+      ✓ Test Create should return status 401 when no userToken is provided
+      ✓ Test edit product should return a message "Product edited with success"
+      ✓ Test edit product should return status 401 when no userToken is provided
+      ✓ Test delete product should return a message "Product deleted with success"
+      ✓ Test delete products should return status 401 when no userToken is provided
